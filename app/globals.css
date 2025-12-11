@@ -121,4 +121,7 @@
   body {
     @apply bg-background text-foreground;
   }
+  .font-playwrite-norge {
+    font-family: 'Playwrite NO', cursive;
+  }
 }

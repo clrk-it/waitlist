@@ -14,8 +14,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "UTD Club Store - Coming Soon",
-  description: "The official marketplace for UTD clubs. Join the waitlist to get early access and exclusive drops.",
+  title: "Mivro - Coming Soon",
+  description: "Join the waitlist to get early access and exclusive drops.",
+  other: {
+    "font-link":
+      "https://fonts.googleapis.com/css2?family=Lugrasimo:wght@100..400&display=swap",
+  },
 };
 
 export default function RootLayout({
@@ -25,6 +29,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lugrasimo:wght@100..400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

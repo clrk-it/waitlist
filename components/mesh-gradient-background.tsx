@@ -3,11 +3,11 @@ export function MeshGradientBackground() {
     <div className="absolute inset-0 overflow-hidden z-0">
       {/* Large ambient base glows - using lighter, more visible colors */}
       <div
-        className="absolute -left-1/3 -top-1/3 h-[200%] w-[200%] rounded-full opacity-60 blur-[200px]"
+        className="absolute -left-1/3 -top-1/3 h-[200%] w-[200%] rounded-full opacity-60 blur-[120px] sm:blur-[160px] md:blur-[200px]"
         style={{ backgroundColor: "hsl(29, 100%, 50%)" }}
       />
       <div
-        className="absolute -right-1/3 -bottom-1/3 h-[200%] w-[200%] rounded-full opacity-50 blur-[200px]"
+        className="absolute -right-1/3 -bottom-1/3 h-[200%] w-[200%] rounded-full opacity-50 blur-[120px] sm:blur-[160px] md:blur-[200px]"
         style={{ backgroundColor: "hsl(157, 60%, 35%)" }}
       />
 
