@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playwrite_NO, Lugrasimo } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -13,14 +13,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Mivro - Coming Soon",
-  description: "Join the waitlist to get early access and exclusive drops.",
-  other: {
-    "font-link":
-      "https://fonts.googleapis.com/css2?family=Lugrasimo:wght@100..400&display=swap",
-  },
-};
+const playwriteNorge = Playwrite_NO({
+  variable: "--font-playwrite-norge",
+});
+
+const lugrasimoSans = Lugrasimo({
+  variable: "--font-lugrasimo-sans",
+  weight: "400",
+  subsets: ["latin"],
+});
 
 export default function RootLayout({
   children,
@@ -31,12 +32,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link
-          href="https://fonts.googleapis.com/css2?family=Lugrasimo:wght@100..400&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Playwrite+NO:wght@100..400&display=swap"
           rel="stylesheet"
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playwriteNorge.variable} ${lugrasimoSans.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           {children}
