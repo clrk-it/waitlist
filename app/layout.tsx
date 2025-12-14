@@ -1,25 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playwrite_NO, Lugrasimo } from "next/font/google";
+import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const playwriteNorge = Playwrite_NO({
-  variable: "--font-playwrite-norge",
-});
-
-const lugrasimoSans = Lugrasimo({
-  variable: "--font-lugrasimo-sans",
-  weight: "400",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  display: "swap",
   subsets: ["latin"],
 });
 
@@ -30,14 +28,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playwrite+NO:wght@100..400&display=swap"
-          rel="stylesheet"
-        />
-      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playwriteNorge.variable} ${lugrasimoSans.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           {children}

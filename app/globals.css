@@ -122,6 +122,35 @@
     @apply bg-background text-foreground;
   }
   .font-playwrite-norge {
-    font-family: 'Playwrite NO', cursive;
+    font-family: "Playwrite NO", cursive;
   }
+}
+
+/* Optimized animations for mesh gradient background - using simpler transforms */
+@keyframes swirl-slow {
+  0%,
+  100% {
+    transform: translate(-50%, -50%);
+  }
+  50% {
+    transform: translate(-45%, -55%);
+  }
+}
+
+.animate-swirl-slow {
+  animation: swirl-slow 35s ease-in-out infinite;
+}
+
+/* Form input styles */
+.form-input-base {
+  @apply bg-transparent border-white/20 placeholder:text-muted-foreground shadow-[0_0_12px_rgba(255,255,255,0.1)] focus-visible:shadow-[0_0_16px_rgba(255,255,255,0.2)] transition-shadow;
+}
+
+.form-input-error {
+  @apply border-red-500/50 shadow-[0_0_12px_rgba(255,0,0,0.2)];
+}
+
+/* Button styles */
+.form-submit-btn {
+  @apply shadow-[0_0_16px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-shadow disabled:opacity-50 disabled:cursor-not-allowed;
 }
