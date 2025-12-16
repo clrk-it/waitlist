@@ -3,9 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { Users, ArrowRight } from "lucide-react";
 import Link from "next/link";
-
-// Mock EarlyAccessCard component - replace with your actual component
-const EarlyAccessCard = () => <div className="mb-6"></div>;
+import EarlyAccessCard from "@/components/earlyaccessCard";
 
 export function WaitlistCard() {
   const [waitListCount, setWaitListCount] = useState(0);
