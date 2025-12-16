@@ -44,7 +44,7 @@ export function WaitlistCard() {
       {/* Headline */}
       <h1 className="mb-3 text-center text-3xl font-bold tracking-tight text-foreground sm:text-2xl sm:mb-3 md:text-3xl lg:text-4xl font-manrope">
         Something{" "}
-        <span className="font-black text-primar font-inter">Extraordinary</span>{" "}
+        <span className="font-black text-primary font-inter">Extraordinary</span>{" "}
         Is Coming Soon
       </h1>
 
