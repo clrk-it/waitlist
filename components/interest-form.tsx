@@ -202,7 +202,7 @@ function InterestFormComponent() {
         <div className="space-y-2">
           <Label htmlFor="email" className="text-foreground">
             Email{" "}
-            <span className="text-muted-foreground">(UTD email preferred)</span>
+            <span className="text-muted-foreground">(UTD email required)</span>
           </Label>
           <Input
             id="email"
@@ -215,6 +215,10 @@ function InterestFormComponent() {
               fieldErrors.email ? "form-input-error" : ""
             }`}
           />
+          <p className="text-sm text-muted-foreground">
+            Only @utdallas.edu addresses are accepted; other emails will be
+            rejected.
+          </p>
           {fieldErrors.email && (
             <p className="text-sm text-red-500">{fieldErrors.email}</p>
           )}
