@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  /* Static export for Azure Static Web Apps */
+  output: "export",
+  
   /* Compression and optimization settings */
   compress: true,
   poweredByHeader: false,
