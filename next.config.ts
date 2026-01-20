@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   /* Static export for Azure Static Web Apps - DISABLED for local dev with API routes */
   /* For production on Azure SWA, uncomment and use Azure Functions for API */
   // output: "export",
+  output: "standalone",
 
   /* Compression and optimization settings */
   compress: true,
