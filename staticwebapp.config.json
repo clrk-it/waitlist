@@ -1,0 +1,21 @@
+{
+    "platform": {
+        "apiRuntime": "node:20"
+    },
+    "navigationFallback": {
+        "rewrite": "/index.html"
+    },
+    "routes": [
+        {
+            "route": "/api/*",
+            "methods": [
+                "OPTIONS"
+            ],
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Headers": "*"
+            }
+        }
+    ]
+}
