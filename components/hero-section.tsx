@@ -1,4 +1,4 @@
-import { WaitlistCard } from "@/components/waitlist-card";
+import { WaitlistCard } from "@/components/features/waitlist-card";
 
 export function HeroSection() {
   return (

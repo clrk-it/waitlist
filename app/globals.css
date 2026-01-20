@@ -8,6 +8,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-league-spartan);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -45,73 +46,79 @@
 
 :root {
   --radius: 0.625rem;
-  --background: 0 0% 98%;
-  --foreground: 0 0% 4%;
+  --background: 0 0% 100%;
+  --foreground: 0 0% 9%;
   --card: 0 0% 100%;
-  --card-foreground: 0 0% 4%;
+  --card-foreground: 0 0% 9%;
   --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 4%;
-  --primary: 29 100% 45%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 157 54% 18%;
+  --popover-foreground: 0 0% 9%;
+  /* Mivro Brand Accent - Amber/Yellow #fbbf24 */
+  --primary: 45 96% 56%;
+  --primary-foreground: 0 0% 9%;
+  /* UTD Secondary - Green #008542 */
+  --secondary: 150 100% 26%;
   --secondary-foreground: 0 0% 100%;
   --muted: 0 0% 96%;
-  --muted-foreground: 240 5% 35%;
-  --accent: 0 0% 96%;
-  --accent-foreground: 0 0% 4%;
+  --muted-foreground: 0 0% 35%;
+  /* UTD Primary - Orange #c75b12 as accent */
+  --accent: 24 82% 43%;
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
   --border: 0 0% 90%;
   --input: 0 0% 90%;
-  --ring: 29 100% 45%;
-  --chart-1: 29 100% 45%;
-  --chart-2: 157 54% 18%;
-  --chart-3: 29 80% 55%;
-  --chart-4: 157 40% 25%;
-  --chart-5: 29 90% 50%;
+  --ring: 45 96% 56%;
+  --chart-1: 45 96% 56%;
+  --chart-2: 150 100% 26%;
+  --chart-3: 24 82% 43%;
+  --chart-4: 45 80% 60%;
+  --chart-5: 150 60% 35%;
   --sidebar: 0 0% 98%;
-  --sidebar-foreground: 0 0% 4%;
-  --sidebar-primary: 29 100% 45%;
-  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-foreground: 0 0% 9%;
+  --sidebar-primary: 45 96% 56%;
+  --sidebar-primary-foreground: 0 0% 9%;
   --sidebar-accent: 0 0% 96%;
-  --sidebar-accent-foreground: 0 0% 4%;
+  --sidebar-accent-foreground: 0 0% 9%;
   --sidebar-border: 0 0% 90%;
-  --sidebar-ring: 29 100% 45%;
+  --sidebar-ring: 45 96% 56%;
 }
 
 .dark {
   --background: 0 0% 4%;
   --foreground: 0 0% 98%;
-  --card: 0 0% 4%;
+  --card: 0 0% 6%;
   --card-foreground: 0 0% 98%;
-  --popover: 0 0% 4%;
+  --popover: 0 0% 6%;
   --popover-foreground: 0 0% 98%;
-  --primary: 29 100% 45%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 157 54% 18%;
+  /* Mivro Brand Accent - Amber/Yellow #fbbf24 */
+  --primary: 45 96% 56%;
+  --primary-foreground: 0 0% 9%;
+  /* UTD Secondary - Green #008542 */
+  --secondary: 150 100% 26%;
   --secondary-foreground: 0 0% 100%;
   --muted: 0 0% 15%;
-  --muted-foreground: 240 5% 65%;
-  --accent: 0 0% 15%;
-  --accent-foreground: 0 0% 98%;
+  --muted-foreground: 0 0% 65%;
+  /* UTD Primary - Orange #c75b12 as accent */
+  --accent: 24 82% 43%;
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 15%;
-  --input: 0 0% 15%;
-  --ring: 29 100% 45%;
-  --chart-1: 29 100% 45%;
-  --chart-2: 157 54% 18%;
-  --chart-3: 29 80% 55%;
-  --chart-4: 157 40% 25%;
-  --chart-5: 29 90% 50%;
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 45 96% 56%;
+  --chart-1: 45 96% 56%;
+  --chart-2: 150 100% 26%;
+  --chart-3: 24 82% 43%;
+  --chart-4: 45 80% 60%;
+  --chart-5: 150 60% 35%;
   --sidebar: 0 0% 4%;
   --sidebar-foreground: 0 0% 98%;
-  --sidebar-primary: 29 100% 45%;
-  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-primary: 45 96% 56%;
+  --sidebar-primary-foreground: 0 0% 9%;
   --sidebar-accent: 0 0% 15%;
   --sidebar-accent-foreground: 0 0% 98%;
-  --sidebar-border: 0 0% 15%;
-  --sidebar-ring: 29 100% 45%;
+  --sidebar-border: 0 0% 20%;
+  --sidebar-ring: 45 96% 56%;
 }
 
 @layer base {
@@ -121,24 +128,21 @@
   body {
     @apply bg-background text-foreground;
   }
-  .font-playwrite-norge {
-    font-family: "Playwrite NO", cursive;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-league-spartan), system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 }
 
-/* Optimized animations for mesh gradient background - using simpler transforms */
-@keyframes swirl-slow {
-  0%,
-  100% {
-    transform: translate(-50%, -50%);
-  }
-  50% {
-    transform: translate(-45%, -55%);
-  }
+/* Card lift effect - subtle and professional */
+.card-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.animate-swirl-slow {
-  animation: swirl-slow 35s ease-in-out infinite;
+.card-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 /* Form input styles */
@@ -153,4 +157,32 @@
 /* Button styles */
 .form-submit-btn {
   @apply shadow-[0_0_16px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-shadow disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+/* Link colors - use brand accent */
+a {
+  @apply transition-colors;
+}
+
+a:hover {
+  color: hsl(var(--primary));
+}
+
+/* Focus ring uses brand accent */
+*:focus-visible {
+  --ring: var(--primary);
+}
+
+/* Border Beam Animation - Magic UI */
+@keyframes border-beam {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+.animate-border-beam {
+  animation: border-beam calc(var(--duration)*1s) infinite linear;
 }

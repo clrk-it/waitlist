@@ -1,0 +1,46 @@
+/**
+ * List of UTD student organizations/clubs
+ * Used in the interest form for club owners
+ */
+export const CLUB_OPTIONS = [
+  "Association for Computing Machinery (ACM UTD)",
+  "Artificial Intelligence Society (AIS)",
+  "American Institute of Aeronautics and Astronautics (AIAA)",
+  "Alpha Eta Mu Beta (Biomedical Engineering Honor Society)",
+  "American Society of Mechanical Engineers (ASME)",
+  "Cloud Computing Club",
+  "Accessible Prosthetics Initiative",
+  "Jonsson School Student Council",
+  "180 Degrees Consulting",
+  "Alpha Kappa Psi (AKPsi)",
+  "American Marketing Association (AMA UTD)",
+  "Association for Information Systems (AIS) Student Chapter",
+  "Analytics on In-Memory Database (AIMDB)",
+  "Association for Latino Professionals for America (ALPFA)",
+  "ASCEND (Asian and Pacific Islander Business Professionals)",
+  "AI Biz Club",
+  "Alpha Epsilon Delta (AED)",
+  "Health Occupations Students of America (HOSA)",
+  "Molding Doctors at UTD",
+  "Pre-Dental Association",
+  "Pre-Physician Assistant Society",
+  "Chemistry Student Association (ChemSA)",
+  "Actuarial Student Association (ASA)",
+  "Data Science Club",
+  "UTD Chess Team",
+  "John Marshall Pre-Law Society (JMPLS)",
+  "Geospatial Information Sciences Student Organization (GISSO)",
+  "The American Institute of Graphic Arts (AIGA) UTD",
+  "The Animation Guild",
+  "Student Game Developer Association",
+  "Reunion: The Dallas Review (Literary Publication)",
+  "UTDance Ensemble",
+  "Active Minds at UTD",
+  "Global Brigades",
+  "Queer & Trans POC at UTD",
+  "Pride at UTD",
+  "The Lavender Club",
+  "Out in Science, Technology, Engineering, and Mathematics (oSTEM)",
+] as const;
+
+export type ClubOption = (typeof CLUB_OPTIONS)[number];
