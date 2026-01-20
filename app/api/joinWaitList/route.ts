@@ -17,8 +17,13 @@ export async function GET() {
 
     return NextResponse.json({ item: count || 0 });
   } catch (err) {
-    console.error("Database error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error("GET Database error:", err);
+    // Log environment variable status safely
+    console.log("Env check:", {
+      url: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+      key: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    });
+    return NextResponse.json({ error: "Internal server error", details: String(err) }, { status: 500 });
   }
 }
 
