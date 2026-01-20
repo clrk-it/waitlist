@@ -1,12 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Users, ArrowRight, Sparkles } from "lucide-react";
+import { Users, ArrowRight, Sparkles, Newspaper, Rocket } from "lucide-react";
 import Link from "next/link";
 import { useWaitlistCount } from "@/hooks/use-waitlist-count";
 import { DecryptedText } from "@/components/ui/decrypted-text";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { MivroLogo } from "@/components/ui/mivro-logo";
+import { CountdownTimer } from "@/components/ui/countdown-timer";
 import { motion } from "framer-motion";
 
 export function WaitlistCard() {
@@ -45,31 +46,16 @@ export function WaitlistCard() {
           <MivroLogo className="text-4xl sm:text-5xl" />
         </motion.div>
 
-        {/* Early Access Badge - Enhanced */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="flex items-center justify-center mb-8"
-        >
-          <div
-            className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold border border-amber-400/30 backdrop-blur-sm"
-            style={{
-              background: "linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0.05) 100%)",
-              color: "#fbbf24",
-              boxShadow: "0 0 20px rgba(251, 191, 36, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)"
-            }}
-          >
-            <Sparkles className="h-4 w-4" />
-            Early Access
-          </div>
-        </motion.div>
+        {/* Countdown Timer - Launching Jan 25, 2026 at 12am CST */}
+        <div className="mb-8">
+          <CountdownTimer targetDate={new Date("2026-01-25T00:00:00-06:00")} />
+        </div>
 
         {/* Headline with DecryptedText effect */}
         <h1 className="mb-6 text-center text-4xl font-black tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl font-display leading-[1.1]">
           <DecryptedText
             text="The Campus Platform"
-            speed={35}
+            speed={45}
             maxIterations={8}
             sequential={false}
             className="block"
@@ -85,7 +71,7 @@ export function WaitlistCard() {
           >
             <DecryptedText
               text="UTD Deserves"
-              speed={35}
+              speed={45}
               maxIterations={10}
               sequential={false}
               className="inline"
@@ -128,23 +114,45 @@ export function WaitlistCard() {
         </div>
 
         {/* Features grid - horizontal row */}
+        {/* Features grid - horizontal row */}
         <div className="flex justify-center gap-4 sm:gap-6 mb-8">
           {[
-            { label: "Clubs" },
-            { label: "News" },
-            { label: "Ventures" },
+            { label: "Clubs", icon: Users },
+            { label: "News", icon: Newspaper },
+            { label: "Ventures", icon: Rocket },
           ].map((feature, i) => (
             <motion.div
               key={feature.label}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 + i * 0.1 }}
-              className="flex flex-col items-center gap-2 px-5 py-4 rounded-xl bg-white/5 border border-white/10"
+              whileHover={{ y: -5, scale: 1.05 }}
+              className="flex flex-col items-center gap-2 px-6 py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-400/30 transition-all cursor-default group"
+              style={{
+                boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
+              }}
             >
-              <span className="text-sm font-medium text-white/80">{feature.label}</span>
+              <div className="p-3 rounded-full bg-white/5 group-hover:bg-amber-400/10 transition-colors">
+                <feature.icon className="h-6 w-6 text-white/70 group-hover:text-amber-400 transition-colors" />
+              </div>
+              <span className="text-sm font-semibold text-white/60 group-hover:text-white transition-colors">{feature.label}</span>
             </motion.div>
           ))}
         </div>
+
+        {/* Contact Link */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7 }}
+          className="flex justify-center mb-8"
+        >
+          <Link href="/contact">
+            <Button variant="link" className="text-white/40 hover:text-amber-400 transition-colors text-base">
+              Contact Us
+            </Button>
+          </Link>
+        </motion.div>
 
         {/* Waitlist Counter */}
         {!loading && count > 0 && (

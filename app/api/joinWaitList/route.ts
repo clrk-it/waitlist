@@ -105,9 +105,9 @@ export async function POST(req: NextRequest) {
       ...(userType === "club_owner" && club ? { club } : {}),
       ...(userType === "venture_owner" && ventureName
         ? {
-            venture_name: ventureName,
-            venture_categories: ventureCategories,
-          }
+          venture_name: ventureName,
+          venture_categories: ventureCategories,
+        }
         : {}),
     };
 
@@ -130,6 +130,33 @@ export async function POST(req: NextRequest) {
         { error: "Internal server error" },
         { status: 500 }
       );
+    }
+
+    // Send email notification (Fail-safe: doesn't block response)
+    try {
+      if (process.env.RESEND_API_KEY) {
+        const { Resend } = await import("resend");
+        const React = await import("react");
+
+        // Dynamic import based on component availability
+        const { MivroWelcomeEmail } = await import("@/components/emails/mivro-welcome-email");
+
+        const resend = new Resend(process.env.RESEND_API_KEY);
+
+        // Map database user types to email content types if necessary
+        // In our case they match keys in contentMap (regular, venture_owner, club_owner, journalist)
+
+        await resend.emails.send({
+          from: "Mivro Waitlist <hello@mivro.org>", // Updated to custom domain since verified
+          to: email, // Send to the actual user!
+          subject: "Welcome to Mivro!",
+          react: React.createElement(MivroWelcomeEmail, {
+            userType: userType as any // Type assertion for compatibility
+          }),
+        });
+      }
+    } catch (emailError) {
+      console.error("Failed to send email:", emailError);
     }
 
     return NextResponse.json(data, { status: 201 });
