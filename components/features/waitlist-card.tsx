@@ -10,8 +10,22 @@ import { MivroLogo } from "@/components/ui/mivro-logo";
 import { CountdownTimer } from "@/components/ui/countdown-timer";
 import { motion } from "framer-motion";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useState } from "react";
+
 export function WaitlistCard() {
   const { count, loading } = useWaitlistCount();
+  const [selectedFeature, setSelectedFeature] = useState<{
+    label: string;
+    icon: any;
+    desc: string;
+  } | null>(null);
 
   return (
     <motion.div
@@ -115,30 +129,86 @@ export function WaitlistCard() {
 
         {/* Features grid - horizontal row */}
         {/* Features grid - horizontal row */}
-        <div className="flex justify-center gap-4 sm:gap-6 mb-8">
-          {[
-            { label: "Clubs", icon: Users },
-            { label: "News", icon: Newspaper },
-            { label: "Ventures", icon: Rocket },
-          ].map((feature, i) => (
-            <motion.div
-              key={feature.label}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 + i * 0.1 }}
-              whileHover={{ y: -5, scale: 1.05 }}
-              className="flex flex-col items-center gap-2 px-6 py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-400/30 transition-all cursor-default group"
-              style={{
-                boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
-              }}
-            >
-              <div className="p-3 rounded-full bg-white/5 group-hover:bg-amber-400/10 transition-colors">
-                <feature.icon className="h-6 w-6 text-white/70 group-hover:text-amber-400 transition-colors" />
+        <Dialog open={!!selectedFeature} onOpenChange={(open) => !open && setSelectedFeature(null)}>
+          <div className="flex justify-center gap-4 sm:gap-6 mb-8">
+            {[
+              {
+                label: "Clubs",
+                icon: Users,
+                desc: "Discover and join a wide range of student organizations. Manage events, recruit members, and grow your community in one centralized hub."
+              },
+              {
+                label: "News",
+                icon: Newspaper,
+                desc: "Stay informed with the latest campus news, student journalism, and trending stories from around UTD. Never miss a beat."
+              },
+              {
+                label: "Ventures",
+                icon: Rocket,
+                desc: "Launch your startup or discover innovative student businesses. A dedicated platform for student entrepreneurs to showcase and thrive."
+              },
+            ].map((feature, i) => (
+              <motion.button
+                key={feature.label}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + i * 0.1 }}
+                whileHover={{ y: -5, scale: 1.05 }}
+                onClick={() => setSelectedFeature(feature)}
+                className="flex flex-col items-center gap-2 px-6 py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-400/30 transition-all cursor-pointer group focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                style={{
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
+                }}
+              >
+                <div className="p-3 rounded-full bg-white/5 group-hover:bg-amber-400/10 transition-colors">
+                  <feature.icon className="h-6 w-6 text-white/70 group-hover:text-amber-400 transition-colors" />
+                </div>
+                <span className="text-sm font-semibold text-white/60 group-hover:text-white transition-colors">{feature.label}</span>
+              </motion.button>
+            ))}
+          </div>
+
+          <DialogContent
+            className="border border-white/10 bg-black/90 p-0 sm:max-w-lg overflow-hidden rounded-3xl"
+            style={{
+              boxShadow: `0 0 50px -12px #fbbf2440`,
+            }}
+          >
+            {selectedFeature && (
+              <div className="relative p-8 sm:p-10">
+                {/* Background Gradient Effect */}
+                <div
+                  className="absolute -top-20 -right-20 h-64 w-64 rounded-full blur-3xl opacity-20 pointer-events-none"
+                  style={{ background: "#fbbf24" }}
+                />
+
+                <div className="relative z-10 flex flex-col items-center text-center">
+                  <DialogHeader className="flex flex-col items-center space-y-0">
+                    {/* Icon */}
+                    <div
+                      className="mb-6 rounded-2xl p-4 bg-white/5 border border-white/10"
+                      style={{
+                        boxShadow: `0 0 20px -5px #fbbf2430`
+                      }}
+                    >
+                      <selectedFeature.icon
+                        className="h-10 w-10 sm:h-12 sm:w-12 text-[#fbbf24]"
+                      />
+                    </div>
+
+                    <DialogTitle className="mb-4 text-3xl font-bold text-white tracking-tight sm:text-4xl font-display text-center">
+                      {selectedFeature.label}
+                    </DialogTitle>
+                  </DialogHeader>
+
+                  <DialogDescription className="text-lg text-white/70 leading-relaxed font-light text-center">
+                    {selectedFeature.desc}
+                  </DialogDescription>
+                </div>
               </div>
-              <span className="text-sm font-semibold text-white/60 group-hover:text-white transition-colors">{feature.label}</span>
-            </motion.div>
-          ))}
-        </div>
+            )}
+          </DialogContent>
+        </Dialog>
 
         {/* Contact Link */}
         <motion.div

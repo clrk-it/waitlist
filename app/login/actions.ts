@@ -10,15 +10,23 @@ export async function login(formData: FormData) {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-    });
+    try {
+        const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
 
-    if (error) {
-        redirect("/login?error=" + encodeURIComponent(error.message));
+        if (error) {
+            console.error("Login Error:", error.message);
+            redirect("/login?error=" + encodeURIComponent(error.message));
+        }
+
+        revalidatePath("/", "layout");
+    } catch (err: any) {
+        console.error("Unexpected Login Error:", err);
+        const message = err.message || "An unexpected error occurred";
+        redirect("/login?error=" + encodeURIComponent(message));
     }
 
-    revalidatePath("/", "layout");
     redirect("/hidden");
 }
