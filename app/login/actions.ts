@@ -22,9 +22,9 @@ export async function login(formData: FormData) {
         }
 
         revalidatePath("/", "layout");
-    } catch (err: any) {
+    } catch (err) {
         console.error("Unexpected Login Error:", err);
-        const message = err.message || "An unexpected error occurred";
+        const message = err instanceof Error ? err.message : "An unexpected error occurred";
         redirect("/login?error=" + encodeURIComponent(message));
     }
 

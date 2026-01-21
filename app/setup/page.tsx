@@ -4,7 +4,6 @@ import { useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { MivroLogo } from "@/components/ui/mivro-logo";
-import { Loader2 } from "lucide-react";
 
 export default function SetupPage() {
     const [email, setEmail] = useState("");

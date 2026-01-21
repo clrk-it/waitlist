@@ -23,6 +23,6 @@ export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
         {ventureName && <p><strong>Venture:</strong> {ventureName}</p>}
         <hr style={{ borderColor: '#eee', margin: '20px 0' }} />
         <p><strong>Reason for joining:</strong></p>
-        <p style={{ fontStyle: 'italic', color: '#666' }}>"{interest}"</p>
+        <p style={{ fontStyle: 'italic', color: '#666' }}>&quot;{interest}&quot;</p>
     </div>
 );

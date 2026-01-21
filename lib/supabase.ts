@@ -22,7 +22,7 @@ function getSupabase(): SupabaseClient {
 // Export as a getter to ensure lazy initialization
 export const supabase = new Proxy({} as SupabaseClient, {
   get(_, prop) {
-    return (getSupabase() as any)[prop];
+    return getSupabase()[prop as keyof SupabaseClient];
   },
 });
 

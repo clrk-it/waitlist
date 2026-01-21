@@ -1,7 +1,6 @@
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { MivroLogo } from "@/components/ui/mivro-logo";
 import { login } from "./actions";
-import { Loader2 } from "lucide-react";
 
 // Helper component to display error params
 function ErrorMessage({ error }: { error: string }) {

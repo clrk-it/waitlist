@@ -14,7 +14,7 @@ export default async function AdminPage() {
         redirect("/");
     }
 
-    const { data: entries, error } = await supabase
+    const { data: entries } = await supabase
         .from("waitlist_entries")
         .select("*")
         .order("created_at", { ascending: false });

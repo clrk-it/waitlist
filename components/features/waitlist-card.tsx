@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Users, ArrowRight, Sparkles, Newspaper, Rocket } from "lucide-react";
+import { Users, ArrowRight, Newspaper, Rocket } from "lucide-react";
 import Link from "next/link";
 import { useWaitlistCount } from "@/hooks/use-waitlist-count";
 import { DecryptedText } from "@/components/ui/decrypted-text";
@@ -17,13 +17,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useState, type ComponentType } from "react";
 
 export function WaitlistCard() {
   const { count, loading } = useWaitlistCount();
   const [selectedFeature, setSelectedFeature] = useState<{
     label: string;
-    icon: any;
+    icon: ComponentType<{ className?: string }>;
     desc: string;
   } | null>(null);
 

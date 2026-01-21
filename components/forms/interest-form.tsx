@@ -75,7 +75,7 @@ export function InterestForm() {
 
       {/* Subtext */}
       <p className="mb-8 text-center text-sm text-gray-600 sm:text-base">
-        Tell us how you'd like to use Mivro and we'll be in touch soon!
+        Tell us how you&apos;d like to use Mivro and we&apos;ll be in touch soon!
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-6">

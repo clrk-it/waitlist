@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import type { InterestFormData, FormFieldErrors, FormSubmissionPayload } from "@/types/form";
 import type { UserType } from "@/lib/supabase";
 import { validateEmailForUserType } from "@/lib/utils";
-import { UTD_EMAIL_REQUIRED_TYPES } from "@/constants/user-types";
 
 interface UseInterestFormReturn {
   formData: InterestFormData;

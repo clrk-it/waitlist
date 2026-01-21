@@ -156,7 +156,7 @@ export async function POST(req: NextRequest) {
           to: email, // Send to the actual user!
           subject: "Welcome to Mivro!",
           react: React.createElement(MivroWelcomeEmail, {
-            userType: userType as any // Type assertion for compatibility
+            userType: userType as UserType
           }),
         });
       }
@@ -165,7 +165,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(data, { status: 201 });
-  } catch (err: any) {
+  } catch (err) {
     console.error("Database error:", err);
     return NextResponse.json(
       { error: "Internal server error" },

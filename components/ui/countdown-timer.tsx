@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Zap } from "lucide-react";
 
@@ -8,62 +8,46 @@ interface CountdownTimerProps {
     targetDate?: Date;
 }
 
-export function CountdownTimer({ targetDate }: CountdownTimerProps) {
-    // Memoize target date to prevent re-renders
-    const target = useMemo(
-        () => targetDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        [targetDate]
-    );
+const DEFAULT_TARGET_DATE = new Date("2026-01-25T00:00:00-06:00");
 
-    const [timeLeft, setTimeLeft] = useState({
+function getTimeLeft(target: Date) {
+    const difference = target.getTime() - Date.now();
+
+    if (difference <= 0) {
+        return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    }
+
+    return {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+    };
+}
+
+export function CountdownTimer({ targetDate }: CountdownTimerProps) {
+    const target = targetDate ?? DEFAULT_TARGET_DATE;
+    const [timeLeft, setTimeLeft] = useState(() => ({
         days: 0,
         hours: 0,
         minutes: 0,
         seconds: 0,
-    });
-
-    const [mounted, setMounted] = useState(false);
+    }));
 
     useEffect(() => {
-        setMounted(true);
+        const timer = setInterval(() => {
+            setTimeLeft(getTimeLeft(target));
+        }, 1000);
 
-        const calculateTimeLeft = () => {
-            const difference = target.getTime() - Date.now();
+        const initialTimer = setTimeout(() => {
+            setTimeLeft(getTimeLeft(target));
+        }, 0);
 
-            if (difference > 0) {
-                setTimeLeft({
-                    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                    hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                    minutes: Math.floor((difference / 1000 / 60) % 60),
-                    seconds: Math.floor((difference / 1000) % 60),
-                });
-            }
+        return () => {
+            clearInterval(timer);
+            clearTimeout(initialTimer);
         };
-
-        calculateTimeLeft();
-        const timer = setInterval(calculateTimeLeft, 1000);
-
-        return () => clearInterval(timer);
     }, [target]);
-
-    // Prevent hydration mismatch
-    if (!mounted) {
-        return (
-            <div className="flex flex-col items-center gap-4">
-                <div
-                    className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
-                    style={{
-                        background: "linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(199, 91, 18, 0.15) 100%)",
-                        border: "1px solid rgba(251, 191, 36, 0.4)",
-                        color: "#fbbf24",
-                    }}
-                >
-                    <Zap className="h-4 w-4 fill-current" />
-                    <span>Launching Soon</span>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <motion.div

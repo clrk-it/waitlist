@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { useRouter } from "next/navigation";
