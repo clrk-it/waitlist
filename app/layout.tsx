@@ -1,26 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, League_Spartan } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const leagueSpartan = League_Spartan({
-  variable: "--font-league-spartan",
-  subsets: ["latin"],
-  weight: "700",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: {
@@ -121,7 +101,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${leagueSpartan.variable} antialiased`}
+        className="antialiased"
       >
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           {children}

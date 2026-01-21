@@ -45,6 +45,9 @@
 }
 
 :root {
+  --font-geist-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-geist-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --font-league-spartan: "League Spartan", "Inter", "Helvetica Neue", Arial, sans-serif;
   --radius: 0.625rem;
   --background: 0 0% 100%;
   --foreground: 0 0% 9%;
@@ -84,6 +87,9 @@
 }
 
 .dark {
+  --font-geist-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-geist-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --font-league-spartan: "League Spartan", "Inter", "Helvetica Neue", Arial, sans-serif;
   --background: 0 0% 4%;
   --foreground: 0 0% 98%;
   --card: 0 0% 6%;
