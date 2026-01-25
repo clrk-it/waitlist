@@ -12,6 +12,7 @@ interface EmailFieldProps {
   error?: string;
   warning?: string;
   disabled?: boolean;
+  compact?: boolean;
 }
 
 export function EmailField({
@@ -21,15 +22,19 @@ export function EmailField({
   error,
   warning,
   disabled,
+  compact = false,
 }: EmailFieldProps) {
   const requiresUTD = ["journalist", "venture_owner", "club_owner"].includes(userType);
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="email" className="text-gray-900">
+      <Label
+        htmlFor="email"
+        className={compact ? "text-xs text-white/80" : "text-white/80"}
+      >
         Email Address <span className="text-red-500">*</span>
         {requiresUTD && (
-          <span className="text-xs text-gray-500 ml-2">
+          <span className="text-xs text-white/40 ml-2">
             (UTD email required)
           </span>
         )}
@@ -42,7 +47,11 @@ export function EmailField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           disabled={disabled}
-          className={`rounded-lg ${error ? "border-red-500" : ""}`}
+          className={[
+            "rounded-lg",
+            compact ? "h-9 px-3 py-2 text-sm" : "",
+            error ? "border-red-500" : "",
+          ].join(" ")}
           aria-invalid={!!error}
           aria-describedby={error ? "email-error" : warning ? "email-warning" : undefined}
         />
@@ -53,7 +62,7 @@ export function EmailField({
         </p>
       )}
       {!error && warning && (
-        <p id="email-warning" className="text-sm text-amber-500">
+        <p id="email-warning" className="text-sm text-amber-400">
           {warning}
         </p>
       )}

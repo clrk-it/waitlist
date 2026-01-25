@@ -1,27 +1,51 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useRef } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export function BackgroundBeams({ className }: { className?: string }) {
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const containerRef = useRef<HTMLDivElement>(null);
 
+    // Use motion values so mouse tracking doesn't trigger React re-renders.
+    const mouseX = useMotionValue(-250);
+    const mouseY = useMotionValue(-250);
+    const spotlightX = useSpring(mouseX, { damping: 25, stiffness: 150 });
+    const spotlightY = useSpring(mouseY, { damping: 25, stiffness: 150 });
+
+    const particles = useMemo(
+        () =>
+            Array.from({ length: 20 }, (_, i) => ({
+                id: i,
+                left: `${10 + (i * 4.5) % 80}%`,
+                top: `${15 + (i * 7) % 70}%`,
+                duration: 4 + (i % 3),
+                delay: i * 0.3,
+            })),
+        [],
+    );
+
     useEffect(() => {
+        let rafId = 0;
         const handleMouseMove = (e: MouseEvent) => {
             if (containerRef.current) {
-                const rect = containerRef.current.getBoundingClientRect();
-                setMousePosition({
-                    x: e.clientX - rect.left,
-                    y: e.clientY - rect.top,
+                const { clientX, clientY } = e;
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(() => {
+                    const rect = containerRef.current?.getBoundingClientRect();
+                    if (!rect) return;
+                    mouseX.set(clientX - rect.left - 250);
+                    mouseY.set(clientY - rect.top - 250);
                 });
             }
         };
 
         window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, []);
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            if (rafId) cancelAnimationFrame(rafId);
+        };
+    }, [mouseX, mouseY]);
 
     return (
         <div
@@ -114,13 +138,13 @@ export function BackgroundBeams({ className }: { className?: string }) {
             />
 
             {/* Floating particles */}
-            {[...Array(20)].map((_, i) => (
+            {particles.map((p) => (
                 <motion.div
-                    key={i}
+                    key={p.id}
                     className="absolute w-1 h-1 rounded-full bg-amber-400/30"
                     style={{
-                        left: `${10 + (i * 4.5) % 80}%`,
-                        top: `${15 + (i * 7) % 70}%`,
+                        left: p.left,
+                        top: p.top,
                     }}
                     animate={{
                         y: [0, -30, 0],
@@ -128,10 +152,10 @@ export function BackgroundBeams({ className }: { className?: string }) {
                         scale: [1, 1.5, 1],
                     }}
                     transition={{
-                        duration: 4 + (i % 3),
+                        duration: p.duration,
                         repeat: Infinity,
                         ease: "easeInOut",
-                        delay: i * 0.3,
+                        delay: p.delay,
                     }}
                 />
             ))}
@@ -245,15 +269,8 @@ export function BackgroundBeams({ className }: { className?: string }) {
                 className="absolute w-[500px] h-[500px] rounded-full pointer-events-none"
                 style={{
                     background: "radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 50%)",
-                }}
-                animate={{
-                    x: mousePosition.x - 250,
-                    y: mousePosition.y - 250,
-                }}
-                transition={{
-                    type: "spring",
-                    damping: 25,
-                    stiffness: 150,
+                    x: spotlightX,
+                    y: spotlightY,
                 }}
             />
 

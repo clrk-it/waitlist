@@ -20,7 +20,7 @@ export default async function AdminPage() {
         .order("created_at", { ascending: false });
 
     return (
-        <div className="relative min-h-screen w-full bg-neutral-950 font-sans selection:bg-amber-500/30">
+        <div className="relative min-h-dvh w-full overflow-x-hidden bg-neutral-950 font-sans selection:bg-amber-500/30">
             <BackgroundBeams className="opacity-30 fixed inset-0" />
 
             <div className="relative z-10 container mx-auto px-4 py-12">

@@ -58,7 +58,7 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
         >
             {/* Badge */}
             <div
-                className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+                className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm font-semibold"
                 style={{
                     background: "linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(199, 91, 18, 0.15) 100%)",
                     border: "1px solid rgba(251, 191, 36, 0.4)",
@@ -81,14 +81,24 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
             </div>
 
             {/* Countdown */}
-            <div className="flex items-start gap-3 sm:gap-4 mt-2">
-                <TimeBlock value={timeLeft.days} label="Days" />
-                <div className="text-amber-400/30 text-3xl font-light mt-2">:</div>
-                <TimeBlock value={timeLeft.hours} label="Hours" />
-                <div className="text-amber-400/30 text-3xl font-light mt-2">:</div>
-                <TimeBlock value={timeLeft.minutes} label="Mins" />
-                <div className="text-amber-400/30 text-3xl font-light mt-2">:</div>
-                <TimeBlock value={timeLeft.seconds} label="Secs" />
+            <div className="mt-2 w-full">
+                {/* Mobile: compact (hide seconds) */}
+                <div className="grid grid-cols-3 gap-2 sm:hidden">
+                    <TimeBlock value={timeLeft.days} label="Days" />
+                    <TimeBlock value={timeLeft.hours} label="Hours" />
+                    <TimeBlock value={timeLeft.minutes} label="Mins" />
+                </div>
+
+                {/* sm+: full countdown */}
+                <div className="hidden sm:flex items-start justify-center gap-4">
+                    <TimeBlock value={timeLeft.days} label="Days" />
+                    <div className="text-amber-400/30 text-3xl font-light mt-2">:</div>
+                    <TimeBlock value={timeLeft.hours} label="Hours" />
+                    <div className="text-amber-400/30 text-3xl font-light mt-2">:</div>
+                    <TimeBlock value={timeLeft.minutes} label="Mins" />
+                    <div className="text-amber-400/30 text-3xl font-light mt-2">:</div>
+                    <TimeBlock value={timeLeft.seconds} label="Secs" />
+                </div>
             </div>
         </motion.div>
     );
@@ -99,7 +109,7 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
     return (
         <div className="flex flex-col items-center gap-2">
             <div
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-3xl sm:text-4xl font-bold font-display backdrop-blur-md"
+                className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-2xl sm:text-4xl font-bold font-display backdrop-blur-md"
                 style={{
                     background: "linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%)",
                     border: "1px solid rgba(251, 191, 36, 0.2)",
@@ -110,7 +120,7 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
             >
                 {value.toString().padStart(2, "0")}
             </div>
-            <span className="text-[10px] sm:text-xs font-bold text-amber-400 uppercase tracking-[0.2em] mt-1">{label}</span>
+            <span className="text-[9px] sm:text-xs font-bold text-amber-400 uppercase tracking-[0.2em] mt-1">{label}</span>
             <div className="w-1 h-1 rounded-full bg-amber-400/30 mt-1" />
         </div>
     );

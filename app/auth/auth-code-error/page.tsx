@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function AuthErrorPage() {
     return (
-        <div className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-neutral-950 font-sans">
+        <div className="relative min-h-dvh w-full flex flex-col items-center justify-center overflow-hidden overflow-x-hidden bg-neutral-950 font-sans">
             <BackgroundBeams className="opacity-40" />
             <div className="z-10 text-center space-y-6 p-8 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl max-w-md mx-4">
                 <h1 className="text-3xl font-bold text-red-500">Authentication Failed</h1>
