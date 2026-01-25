@@ -50,12 +50,12 @@ export function UserTypeSelector({
         >
           <SelectValue placeholder="Select an option" />
         </SelectTrigger>
-        <SelectContent className="max-h-72 overflow-y-auto">
+        <SelectContent className="max-h-72 overflow-y-auto border-white/10 bg-black/90 text-white backdrop-blur">
           {USER_TYPE_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
+            <SelectItem key={option.value} value={option.value} className="text-white">
               <div className="flex flex-col">
                 <span className="font-medium text-left">{option.label}</span>
-                <span className="text-xs text-muted-foreground">{option.description}</span>
+                <span className="text-xs text-white/70">{option.description}</span>
               </div>
             </SelectItem>
           ))}
