@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
-import { BackgroundBeams } from "@/components/ui/background-beams";
 import { useRouter } from "next/navigation";
+import { MarketingShell } from "@/components/layout/marketing-shell";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function UpdatePasswordPage() {
     const [password, setPassword] = useState("");
@@ -29,26 +32,29 @@ export default function UpdatePasswordPage() {
     };
 
     return (
-        <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-neutral-950 font-sans text-white">
-            <BackgroundBeams className="opacity-40" />
-            <div className="z-10 w-full max-w-md p-8 bg-black/40 border border-white/10 rounded-2xl backdrop-blur-xl">
-                <h1 className="text-xl font-bold text-center mb-6">Set New Password</h1>
-                <input
+        <MarketingShell maxWidth="md">
+            <GlassCard contentClassName="p-8 sm:p-10">
+                <h1 className="text-xl sm:text-2xl font-bold text-center mb-6 text-white font-display tracking-tight">
+                    Set New Password
+                </h1>
+                <Input
                     type="password"
                     placeholder="New Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded px-4 py-2 mb-4"
+                    className="rounded-lg mb-4"
                 />
-                <button
+                <Button
                     onClick={handleUpdate}
                     disabled={loading}
-                    className="w-full bg-amber-500 hover:bg-amber-600 py-2 rounded font-bold text-black"
+                    className="w-full font-bold"
                 >
                     Update Password
-                </button>
-                {message && <p className="mt-4 text-center text-sm">{message}</p>}
-            </div>
-        </div>
+                </Button>
+                {message && (
+                    <p className="mt-4 text-center text-sm text-white/70">{message}</p>
+                )}
+            </GlassCard>
+        </MarketingShell>
     );
 }

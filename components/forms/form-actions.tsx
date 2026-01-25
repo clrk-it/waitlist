@@ -14,15 +14,18 @@ export function FormActions({ loading, error, onSubmit }: FormActionsProps) {
   return (
     <>
       {error && (
-        <Alert className="border-red-500 bg-red-50">
-          <AlertCircle className="h-4 w-4 text-red-500" />
-          <AlertDescription className="text-red-700">{error}</AlertDescription>
+        <Alert
+          variant="destructive"
+          className="border border-red-500/30 bg-red-500/10"
+        >
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
       <Button
         type="submit"
-        className="w-full bg-[#fbbf24] text-gray-900 hover:bg-[#f9a825] font-semibold"
+        className="w-full font-bold rounded-xl border-0 bg-linear-to-br from-amber-300 to-amber-500 text-[#09090b] hover:from-amber-200 hover:to-amber-400"
         size="lg"
         disabled={loading}
         onClick={onSubmit}

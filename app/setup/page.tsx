@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
-import { BackgroundBeams } from "@/components/ui/background-beams";
 import { MivroLogo } from "@/components/ui/mivro-logo";
+import { MarketingShell } from "@/components/layout/marketing-shell";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function SetupPage() {
     const [email, setEmail] = useState("");
@@ -40,52 +43,54 @@ export default function SetupPage() {
     };
 
     return (
-        <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-neutral-950 font-sans text-white">
-            <BackgroundBeams className="opacity-40" />
-            <div className="z-10 w-full max-w-md p-8 bg-black/40 border border-white/10 rounded-2xl backdrop-blur-xl">
-                <MivroLogo className="text-4xl mx-auto mb-6" />
-                <h1 className="text-xl font-bold text-center mb-6">Admin Setup</h1>
+        <MarketingShell maxWidth="md">
+            <GlassCard contentClassName="p-8 sm:p-10">
+                <MivroLogo className="text-3xl sm:text-4xl mx-auto mb-4" />
+                <h1 className="text-xl sm:text-2xl font-bold text-center mb-6 text-white font-display tracking-tight">
+                    Admin Setup
+                </h1>
 
                 <div className="space-y-4">
-                    <input
+                    <Input
                         type="email"
                         placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded px-4 py-2"
+                        className="rounded-lg"
                     />
-                    <input
+                    <Input
                         type="password"
                         placeholder="New Password (for Sign Up)"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded px-4 py-2"
+                        className="rounded-lg"
                     />
 
                     <div className="flex gap-2">
-                        <button
+                        <Button
                             onClick={handleSignUp}
                             disabled={loading}
-                            className="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded font-bold"
+                            className="flex-1 font-bold"
                         >
                             Create Account
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             onClick={handleReset}
                             disabled={loading}
-                            className="flex-1 bg-blue-600 hover:bg-blue-700 py-2 rounded font-bold"
+                            variant="outline"
+                            className="flex-1 font-bold"
                         >
                             Reset Password
-                        </button>
+                        </Button>
                     </div>
 
                     {message && (
-                        <p className="text-center text-sm p-2 bg-white/10 rounded border border-white/20 mt-4">
+                        <p className="text-center text-sm p-3 bg-white/5 rounded-lg border border-white/10 text-white/70 mt-4">
                             {message}
                         </p>
                     )}
                 </div>
-            </div>
-        </div>
+            </GlassCard>
+        </MarketingShell>
     );
 }

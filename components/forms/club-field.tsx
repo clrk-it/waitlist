@@ -44,7 +44,7 @@ export function ClubField({
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="club" className="text-gray-900">
+      <Label htmlFor="club" className="text-white/80">
         What club do you represent? <span className="text-red-500">*</span>
       </Label>
       <Select
@@ -59,13 +59,13 @@ export function ClubField({
         >
           <SelectValue placeholder="Select your club" />
         </SelectTrigger>
-        <SelectContent className="max-h-72 overflow-y-auto bg-white border-gray-200">
+        <SelectContent className="max-h-72 overflow-y-auto">
           {CLUB_OPTIONS.map((club) => (
-            <SelectItem key={club} value={club} className="text-gray-900">
+            <SelectItem key={club} value={club}>
               {club}
             </SelectItem>
           ))}
-          <SelectItem value="__other__" className="text-gray-900">Other (type manually)</SelectItem>
+          <SelectItem value="__other__">Other (type manually)</SelectItem>
         </SelectContent>
       </Select>
 
@@ -77,7 +77,7 @@ export function ClubField({
           value={otherValue}
           onChange={(e) => onOtherChange(e.target.value)}
           disabled={disabled}
-          className={error ? "border-red-500" : ""}
+          className={`rounded-lg ${error ? "border-red-500" : ""}`}
         />
       )}
       {error && <p className="text-sm text-red-500">{error}</p>}

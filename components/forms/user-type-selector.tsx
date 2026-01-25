@@ -16,6 +16,7 @@ interface UserTypeSelectorProps {
   onChange: (value: UserType) => void;
   error?: string;
   disabled?: boolean;
+  compact?: boolean;
 }
 
 export function UserTypeSelector({
@@ -23,10 +24,14 @@ export function UserTypeSelector({
   onChange,
   error,
   disabled,
+  compact = false,
 }: UserTypeSelectorProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor="userType" className="text-gray-900">
+      <Label
+        htmlFor="userType"
+        className={(compact ? "text-xs text-white/80" : "text-white/80")}
+      >
         How would you like to use Mivro? <span className="text-red-500">*</span>
       </Label>
       <Select
@@ -36,17 +41,21 @@ export function UserTypeSelector({
       >
         <SelectTrigger
           id="userType"
-          className={`w-full justify-between ${error ? "border-destructive" : ""}`}
+          className={[
+            "w-full justify-between ",
+            compact ? "px-3 py-2 text-sm" : "",
+            error ? "border-destructive" : "",
+          ].join(" ")}
           aria-invalid={!!error}
         >
           <SelectValue placeholder="Select an option" />
         </SelectTrigger>
-        <SelectContent className="max-h-72 overflow-y-auto bg-white border-gray-200">
+        <SelectContent className="max-h-72 overflow-y-auto">
           {USER_TYPE_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value} className="text-gray-900">
+            <SelectItem key={option.value} value={option.value}>
               <div className="flex flex-col">
-                <span className="font-medium">{option.label}</span>
-                <span className="text-xs text-gray-500">{option.description}</span>
+                <span className="font-medium text-left">{option.label}</span>
+                <span className="text-xs text-muted-foreground">{option.description}</span>
               </div>
             </SelectItem>
           ))}

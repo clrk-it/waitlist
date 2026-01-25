@@ -30,7 +30,8 @@ export function WaitlistCard() {
   return (
     <>
       <motion.div
-        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        // Render immediately on first paint; avoid “loading late” feel.
+        initial={false}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative w-full max-w-3xl mx-auto"
@@ -45,7 +46,7 @@ export function WaitlistCard() {
         />
 
         {/* Main card with glassmorphism */}
-        <div className="relative w-full rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-6 sm:p-8 overflow-hidden">
+        <div className="relative z-50 w-full rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-4 sm:p-8 overflow-hidden">
           {/* Border beam effect */}
           <BorderBeam
             size={250}
@@ -62,32 +63,32 @@ export function WaitlistCard() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1 }}
-            className="flex justify-center mb-4"
+            className="flex justify-center mb-3 sm:mb-4"
           >
-            <MivroLogo className="text-3xl sm:text-4xl" />
+            <MivroLogo className="text-2xl sm:text-4xl" />
           </motion.div>
 
           {/* Countdown Timer - Launching Feb 1, 2026 at 12am CST */}
-          <div className="mb-5">
+          <div className="mb-4 sm:mb-5">
             <CountdownTimer
               targetDate={new Date("2026-02-01T00:00:00-06:00")}
             />
           </div>
 
           {/* Headline with DecryptedText effect */}
-          <h1 className="mb-4 text-center text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl font-display leading-[1.1]">
+          <h1 className="mb-3 sm:mb-4 text-center text-2xl font-black tracking-tight text-white sm:text-4xl md:text-5xl font-display leading-[1.1]">
             <DecryptedText
               text="The Campus Platform"
               animateOn="view"
               revealDirection="start"
               sequential
-              useOriginalCharsOnly={false}
-              speed={60}
-              maxIterations={30}
+              useOriginalCharsOnly={true}
+              speed={80}
+              maxIterations={50}
               className="inline"
             />
             <span
-              className="block mt-2"
+              className="block mt-1 sm:mt-2"
               style={{
                 background:
                   "linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)",
@@ -97,26 +98,39 @@ export function WaitlistCard() {
               }}
             >
               <DecryptedText
-                text="UTD Deserves"
+                text="UTD"
                 animateOn="view"
                 revealDirection="start"
                 sequential
-                useOriginalCharsOnly={false}
-                speed={60}
-                maxIterations={30}
+                useOriginalCharsOnly={true}
+                speed={80}
+                maxIterations={100}
                 className="inline"
               />
+              <br className="sm:hidden" />
+              <span className="sm:ml-3">
+                <DecryptedText
+                  text="Deserves"
+                  animateOn="view"
+                  revealDirection="start"
+                  sequential
+                  useOriginalCharsOnly={true}
+                  speed={90}
+                  maxIterations={100}
+                  className="inline"
+                />
+              </span>
             </span>
           </h1>
 
           {/* Subtext */}
-          <p className="mb-6 text-center text-base text-white/70 sm:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="mb-4 sm:mb-6 text-center text-sm text-white/70 sm:text-lg max-w-2xl mx-auto leading-relaxed font-light">
             Mivro connects students, clubs, journalists, and student businesses
             in one unified platform.
           </p>
 
           {/* CTA Button - Enhanced with glow */}
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-4 sm:mb-6">
             <Link href="/form">
               <motion.div
                 whileHover={{ scale: 1.02 }}
@@ -133,7 +147,7 @@ export function WaitlistCard() {
                 />
                 <Button
                   size="lg"
-                  className="relative px-8 py-5 text-lg font-bold rounded-xl border-0 transition-all"
+                  className="relative px-6 py-4 text-base sm:px-8 sm:py-5 sm:text-lg font-bold rounded-xl border-0 transition-all"
                   style={{
                     background:
                       "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
@@ -143,14 +157,14 @@ export function WaitlistCard() {
                   }}
                 >
                   Express Your Interest
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>
             </Link>
           </div>
 
           {/* Features grid - horizontal row */}
-          <div className="relative z-20 flex justify-center gap-3 sm:gap-4 mb-5">
+          <div className="relative z-20 grid w-full max-w-md grid-cols-3 gap-2 sm:gap-4 mx-auto mb-4 sm:mb-5">
             {[
               {
                 label: "Clubs",
@@ -175,18 +189,17 @@ export function WaitlistCard() {
                 transition={{ delay: 0.5 + i * 0.1 }}
                 whileHover={{ y: -5, scale: 1.05 }}
                 onClick={() => {
-                  console.log("Clicked feature:", feature.label);
                   setSelectedFeature(feature);
                 }}
-                className="flex flex-col items-center gap-1.5 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-400/30 transition-all cursor-pointer group"
+                className="min-w-0 flex flex-col items-center justify-center gap-1.5 px-2 py-2 sm:px-4 sm:py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-400/30 transition-all cursor-pointer group"
                 style={{
                   boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
                 }}
               >
-                <div className="p-2 rounded-full bg-white/5 group-hover:bg-amber-400/10 transition-colors">
-                  <feature.icon className="h-5 w-5 text-white/70 group-hover:text-amber-400 transition-colors" />
+                <div className="p-1.5 sm:p-2 rounded-full bg-white/5 group-hover:bg-amber-400/10 transition-colors">
+                  <feature.icon className="h-4 w-4 sm:h-5 sm:w-5 text-white/70 group-hover:text-amber-400 transition-colors" />
                 </div>
-                <span className="text-xs font-semibold text-white/60 group-hover:text-white transition-colors">
+                <span className="text-[10px] sm:text-xs font-semibold text-white/60 group-hover:text-white transition-colors">
                   {feature.label}
                 </span>
               </motion.div>
@@ -198,7 +211,7 @@ export function WaitlistCard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
-            className="flex justify-center mb-5"
+            className="flex justify-center mb-3 sm:mb-5"
           >
             <Link href="/contact">
               <Button
@@ -241,7 +254,7 @@ export function WaitlistCard() {
           }}
         >
           {selectedFeature && (
-            <div className="relative p-8 sm:p-10">
+            <div className="relative p-6 sm:p-10">
               {/* Background Gradient Effect */}
               <div
                 className="absolute -top-20 -right-20 h-64 w-64 rounded-full blur-3xl opacity-20 pointer-events-none"
@@ -260,12 +273,12 @@ export function WaitlistCard() {
                     <selectedFeature.icon className="h-10 w-10 sm:h-12 sm:w-12 text-[#fbbf24]" />
                   </div>
 
-                  <DialogTitle className="mb-4 text-3xl font-bold text-white tracking-tight sm:text-4xl font-display text-center">
+                  <DialogTitle className="mb-4 text-2xl sm:text-4xl font-bold text-white tracking-tight font-display text-center">
                     {selectedFeature.label}
                   </DialogTitle>
                 </DialogHeader>
 
-                <DialogDescription className="text-lg text-white/70 leading-relaxed font-light text-center">
+                <DialogDescription className="text-base sm:text-lg text-white/70 leading-relaxed font-light text-center">
                   {selectedFeature.desc}
                 </DialogDescription>
               </div>

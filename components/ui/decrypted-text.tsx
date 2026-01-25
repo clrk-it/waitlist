@@ -1,10 +1,13 @@
-import { useEffect, useState, useRef } from "react";
-import { motion } from "motion/react";
-import type { HTMLMotionProps } from "motion/react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ComponentPropsWithoutRef,
+} from "react";
 
 const styles = {
   wrapper: {
-    display: "inline-block",
+    display: "inline",
     whiteSpace: "pre-wrap",
   },
   srOnly: {
@@ -19,7 +22,7 @@ const styles = {
   },
 };
 
-interface DecryptedTextProps extends HTMLMotionProps<"span"> {
+interface DecryptedTextProps extends ComponentPropsWithoutRef<"span"> {
   text: string;
   speed?: number;
   maxIterations?: number;
@@ -33,7 +36,7 @@ interface DecryptedTextProps extends HTMLMotionProps<"span"> {
   animateOn?: "view" | "hover" | "both";
 }
 
-export default function DecryptedText({
+function DecryptedText({
   text,
   speed = 50,
   maxIterations = 10,
@@ -231,13 +234,15 @@ export default function DecryptedText({
         }
       : {};
 
+  const { style, ...restProps } = props;
+
   return (
-    <motion.span
+    <span
       className={parentClassName}
       ref={containerRef}
-      style={styles.wrapper}
+      style={{ ...styles.wrapper, ...(style ?? {}) }}
       {...hoverProps}
-      {...props}
+      {...restProps}
     >
       <span style={styles.srOnly}>{displayText}</span>
 
@@ -256,6 +261,9 @@ export default function DecryptedText({
           );
         })}
       </span>
-    </motion.span>
+    </span>
   );
 }
+
+export { DecryptedText };
+export default DecryptedText;

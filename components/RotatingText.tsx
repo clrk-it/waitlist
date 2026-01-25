@@ -4,11 +4,11 @@ import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo
 import {
   motion,
   AnimatePresence,
-  Transition,
+  type Transition,
   type VariantLabels,
   type Target,
-  type TargetAndTransition
-} from 'motion/react';
+  type TargetAndTransition,
+} from 'framer-motion';
 
 import './RotatingText.css';
 
