@@ -118,9 +118,9 @@ export function WaitlistCard() {
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "-120%" }}
-              staggerDuration={0.025}
+              staggerDuration={0.015}
               splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
-              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+              transition={{ type: "spring", damping: 40, stiffness: 250, mass: 0.9 }}
               rotationInterval={2000}
             />{" "}
             {/* <br/>
