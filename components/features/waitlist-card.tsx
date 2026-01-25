@@ -18,6 +18,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState, type ComponentType } from "react";
+import SplitTexts from "@/components/SplitText";
+import RotatingText from "@/components/RotatingText";
 
 export function WaitlistCard() {
   const { count, loading } = useWaitlistCount();
@@ -77,57 +79,53 @@ export function WaitlistCard() {
 
           {/* Headline with DecryptedText effect */}
           <h1 className="mb-3 sm:mb-4 text-center text-2xl font-black tracking-tight text-white sm:text-4xl md:text-5xl font-display leading-[1.1]">
-            <DecryptedText
+            {/* < DecryptedText
               text="The Campus Platform"
               animateOn="view"
               revealDirection="start"
               sequential
               useOriginalCharsOnly={true}
-              speed={80}
+              speed={120}
               maxIterations={50}
               className="inline"
+              encryptedClassName="inline"
+              startDelayMs={0}
+              respectReducedMotion={false}
+            /> */}
+            <SplitTexts
+              text="The Campus Platform"
+              className="inline"
             />
-            <span
-              className="block mt-1 sm:mt-2"
-              style={{
-                background:
-                  "linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              <DecryptedText
-                text="UTD"
-                animateOn="view"
-                revealDirection="start"
-                sequential
-                useOriginalCharsOnly={true}
-                speed={80}
-                maxIterations={100}
+            <br className="sm:hidden" />
+            <SplitTexts
+                text="UTD Deserves"
                 className="inline"
               />
-              <br className="sm:hidden" />
-              <span className="sm:ml-3">
-                <DecryptedText
-                  text="Deserves"
-                  animateOn="view"
-                  revealDirection="start"
-                  sequential
-                  useOriginalCharsOnly={true}
-                  speed={90}
-                  maxIterations={100}
-                  className="inline"
-                />
-              </span>
-            </span>
+
           </h1>
 
           {/* Subtext */}
-          <p className="mb-4 sm:mb-6 text-center text-sm text-white/70 sm:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+          {/* <p className="mb-4 sm:mb-6 text-center text-sm text-white/70 sm:text-lg max-w-2xl mx-auto leading-relaxed font-light">
             Mivro connects students, clubs, journalists, and student businesses
             in one unified platform.
-          </p>
+          </p> */}
+          <div className="mb-4 sm:mb-6 text-center text-sm text-white/70 sm:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+            Mivro connects{" "}
+            <RotatingText
+              texts={["students", "clubs", "journalists", "student businesses"]}
+              mainClassName="px-2 sm:px-2 md:px-3 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 text-zinc-950 overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+              staggerFrom="last"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+              rotationInterval={2000}
+            />{" "}
+            {/* <br/>
+            in one unified platform. */}
+          </div>
 
           {/* CTA Button - Enhanced with glow */}
           <div className="flex justify-center mb-4 sm:mb-6">

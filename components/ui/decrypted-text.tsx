@@ -1,5 +1,8 @@
+"use client";
+
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
   type ComponentPropsWithoutRef,
@@ -7,7 +10,8 @@ import {
 
 const styles = {
   wrapper: {
-    display: "inline",
+    // Use inline-block so IntersectionObserver + getBoundingClientRect are reliable.
+    display: "inline-block",
     whiteSpace: "pre-wrap",
   },
   srOnly: {
@@ -34,6 +38,8 @@ interface DecryptedTextProps extends ComponentPropsWithoutRef<"span"> {
   parentClassName?: string;
   encryptedClassName?: string;
   animateOn?: "view" | "hover" | "both";
+  startDelayMs?: number;
+  respectReducedMotion?: boolean;
 }
 
 function DecryptedText({
@@ -48,161 +54,189 @@ function DecryptedText({
   parentClassName = "",
   encryptedClassName = "",
   animateOn = "hover",
+  startDelayMs = 0,
+  respectReducedMotion = true,
   ...props
 }: DecryptedTextProps) {
   const [displayText, setDisplayText] = useState<string>(text);
-  const [isHovering, setIsHovering] = useState<boolean>(false);
-  const [isScrambling, setIsScrambling] = useState<boolean>(false);
-  const [revealedIndices, setRevealedIndices] = useState<Set<number>>(
-    new Set(),
-  );
-  const [hasAnimated, setHasAnimated] = useState<boolean>(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isScrambling, setIsScrambling] = useState(false);
+  const [viewTriggered, setViewTriggered] = useState(false);
+  const [viewCompleted, setViewCompleted] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [restartNonce, setRestartNonce] = useState(0);
   const containerRef = useRef<HTMLSpanElement>(null);
 
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
-    let currentIteration = 0;
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const iterationRef = useRef(0);
+  const revealedCountRef = useRef(0);
+  const revealedMaskRef = useRef<boolean[]>([]);
+  const runningSourceRef = useRef<"view" | "hover" | null>(null);
 
-    const getNextIndex = (revealedSet: Set<number>): number => {
-      const textLength = text.length;
-      switch (revealDirection) {
-        case "start":
-          return revealedSet.size;
-        case "end":
-          return textLength - 1 - revealedSet.size;
-        case "center": {
-          const middle = Math.floor(textLength / 2);
-          const offset = Math.floor(revealedSet.size / 2);
-          const nextIndex =
-            revealedSet.size % 2 === 0 ? middle + offset : middle - offset - 1;
+  const viewEnabled = animateOn === "view" || animateOn === "both";
+  const hoverEnabled = animateOn === "hover" || animateOn === "both";
 
-          if (
-            nextIndex >= 0 &&
-            nextIndex < textLength &&
-            !revealedSet.has(nextIndex)
-          ) {
-            return nextIndex;
-          }
+  const availableChars = useMemo(() => {
+    if (useOriginalCharsOnly) {
+      return Array.from(new Set(text.split(""))).filter((char) => char !== " ");
+    }
+    return characters.split("");
+  }, [characters, text, useOriginalCharsOnly]);
 
-          for (let i = 0; i < textLength; i++) {
-            if (!revealedSet.has(i)) return i;
-          }
-          return 0;
-        }
-        default:
-          return revealedSet.size;
-      }
-    };
+  const revealOrder = useMemo(() => {
+    const len = text.length;
+    const isNonSpace = (i: number) => text[i] !== " ";
+    if (len === 0) return [];
 
-    const availableChars = useOriginalCharsOnly
-      ? Array.from(new Set(text.split(""))).filter((char) => char !== " ")
-      : characters.split("");
-
-    const shuffleText = (
-      originalText: string,
-      currentRevealed: Set<number>,
-    ): string => {
-      if (useOriginalCharsOnly) {
-        const positions = originalText.split("").map((char, i) => ({
-          char,
-          isSpace: char === " ",
-          index: i,
-          isRevealed: currentRevealed.has(i),
-        }));
-
-        const nonSpaceChars = positions
-          .filter((p) => !p.isSpace && !p.isRevealed)
-          .map((p) => p.char);
-
-        for (let i = nonSpaceChars.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [nonSpaceChars[i], nonSpaceChars[j]] = [
-            nonSpaceChars[j],
-            nonSpaceChars[i],
-          ];
-        }
-
-        let charIndex = 0;
-        return positions
-          .map((p) => {
-            if (p.isSpace) return " ";
-            if (p.isRevealed) return originalText[p.index];
-            return nonSpaceChars[charIndex++];
-          })
-          .join("");
-      } else {
-        return originalText
-          .split("")
-          .map((char, i) => {
-            if (char === " ") return " ";
-            if (currentRevealed.has(i)) return originalText[i];
-            return availableChars[
-              Math.floor(Math.random() * availableChars.length)
-            ];
-          })
-          .join("");
-      }
-    };
-
-    if (isHovering) {
-      setIsScrambling(true);
-      interval = setInterval(() => {
-        setRevealedIndices((prevRevealed) => {
-          if (sequential) {
-            if (prevRevealed.size < text.length) {
-              const nextIndex = getNextIndex(prevRevealed);
-              const newRevealed = new Set(prevRevealed);
-              newRevealed.add(nextIndex);
-              setDisplayText(shuffleText(text, newRevealed));
-              return newRevealed;
-            } else {
-              clearInterval(interval);
-              setIsScrambling(false);
-              return prevRevealed;
-            }
-          } else {
-            setDisplayText(shuffleText(text, prevRevealed));
-            currentIteration++;
-            if (currentIteration >= maxIterations) {
-              clearInterval(interval);
-              setIsScrambling(false);
-              setDisplayText(text);
-            }
-            return prevRevealed;
-          }
-        });
-      }, speed);
-    } else {
-      setDisplayText(text);
-      setRevealedIndices(new Set());
-      setIsScrambling(false);
+    if (revealDirection === "start") {
+      const order: number[] = [];
+      for (let i = 0; i < len; i++) if (isNonSpace(i)) order.push(i);
+      return order;
     }
 
+    if (revealDirection === "end") {
+      const order: number[] = [];
+      for (let i = len - 1; i >= 0; i--) if (isNonSpace(i)) order.push(i);
+      return order;
+    }
+
+    // center
+    const order: number[] = [];
+    const seen = new Set<number>();
+    const mid = Math.floor(len / 2);
+    for (let radius = 0; radius < len; radius++) {
+      const a = mid + radius;
+      const b = mid - radius - 1;
+
+      if (a >= 0 && a < len && isNonSpace(a) && !seen.has(a)) {
+        seen.add(a);
+        order.push(a);
+      }
+      if (b >= 0 && b < len && isNonSpace(b) && !seen.has(b)) {
+        seen.add(b);
+        order.push(b);
+      }
+
+      if (order.length >= len) break;
+    }
+
+    return order;
+  }, [revealDirection, text]);
+
+  const clearTimers = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  };
+
+  // Always cleanup timers on unmount.
+  useEffect(() => {
     return () => {
-      if (interval) clearInterval(interval);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [
-    isHovering,
-    text,
-    speed,
-    maxIterations,
-    sequential,
-    revealDirection,
-    characters,
-    useOriginalCharsOnly,
-  ]);
+  }, []);
+
+  const resetProgress = () => {
+    iterationRef.current = 0;
+    revealedCountRef.current = 0;
+    revealedMaskRef.current = Array.from({ length: text.length }, () => false);
+  };
+
+  const pickRandomChar = () => {
+    if (availableChars.length === 0) return " ";
+    return availableChars[Math.floor(Math.random() * availableChars.length)];
+  };
+
+  const scramble = () => {
+    const mask = revealedMaskRef.current;
+    return text
+      .split("")
+      .map((char, i) => {
+        if (char === " ") return " ";
+        if (mask[i]) return text[i];
+        return pickRandomChar();
+      })
+      .join("");
+  };
+
+  const stopScramble = (opts?: { resetToOriginal?: boolean; markViewDone?: boolean }) => {
+    clearTimers();
+    runningSourceRef.current = null;
+    setIsScrambling(false);
+    if (opts?.resetToOriginal) setDisplayText(text);
+    if (opts?.markViewDone) setViewCompleted(true);
+  };
+
+  // Keep displayed text aligned when the `text` prop changes.
+  useEffect(() => {
+    if (!isScrambling) setDisplayText(text);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [text]);
+
+  // Reduced motion => skip the scrambling animation entirely.
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+      return;
+    }
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onChange = () => setPrefersReducedMotion(media.matches);
+    onChange();
+
+    if (typeof media.addEventListener === "function") {
+      media.addEventListener("change", onChange);
+      return () => media.removeEventListener("change", onChange);
+    }
+
+    // Safari < 14
+    // eslint-disable-next-line deprecation/deprecation
+    media.addListener(onChange);
+    // eslint-disable-next-line deprecation/deprecation
+    return () => media.removeListener(onChange);
+  }, []);
+
+  // Pause timers when tab is hidden; restart when visible.
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      if (document.visibilityState !== "visible") {
+        clearTimers();
+        return;
+      }
+      setRestartNonce((n) => n + 1);
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", onVisibilityChange);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    if (animateOn !== "view" && animateOn !== "both") return;
+    if (!viewEnabled || viewTriggered) return;
 
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          setIsHovering(true);
-          setHasAnimated(true);
-        }
-      });
+    const currentRef = containerRef.current;
+    if (!currentRef) return;
+
+    const isInViewportNow = () => {
+      const rect = currentRef.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight || 0;
+      return rect.bottom > 0 && rect.top < vh;
     };
+
+    // Above-the-fold text should start immediately (common case).
+    if (isInViewportNow()) {
+      setViewTriggered(true);
+      return;
+    }
+
+    if (typeof IntersectionObserver !== "function") {
+      setViewTriggered(true);
+      return;
+    }
 
     const observerOptions = {
       root: null,
@@ -210,24 +244,103 @@ function DecryptedText({
       threshold: 0.1,
     };
 
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setViewTriggered(true);
+        }
+      });
+    };
+
     const observer = new IntersectionObserver(
       observerCallback,
       observerOptions,
     );
-    const currentRef = containerRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
+    observer.observe(currentRef);
 
     return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
+      observer.unobserve(currentRef);
     };
-  }, [animateOn, hasAnimated]);
+  }, [viewEnabled, viewTriggered]);
+
+  // For "view" mode, start immediately on mount (homepage headline is above-the-fold).
+  // `viewCompleted` prevents re-running the view animation.
+  const viewActive = viewEnabled && !viewCompleted;
+  const hoverActive = hoverEnabled && isHovering;
+  const active = viewActive || hoverActive;
+
+  useEffect(() => {
+    if (!active) {
+      // Hover-only animations should snap back when not active.
+      if (runningSourceRef.current === "hover") {
+        stopScramble({ resetToOriginal: true });
+      }
+      return;
+    }
+
+    if (respectReducedMotion && prefersReducedMotion) {
+      stopScramble({
+        resetToOriginal: true,
+        markViewDone: viewActive,
+      });
+      return;
+    }
+
+    // Restart (or start) with latest config.
+    clearTimers();
+    resetProgress();
+
+    const source: "view" | "hover" = viewActive ? "view" : "hover";
+    runningSourceRef.current = source;
+    setIsScrambling(true);
+
+    const start = () => {
+      intervalRef.current = setInterval(() => {
+        if (sequential) {
+          if (revealedCountRef.current < revealOrder.length) {
+            const nextIndex = revealOrder[revealedCountRef.current];
+            revealedMaskRef.current[nextIndex] = true;
+            revealedCountRef.current += 1;
+            setDisplayText(scramble());
+            return;
+          }
+
+          stopScramble({ resetToOriginal: true, markViewDone: source === "view" });
+          return;
+        }
+
+        setDisplayText(scramble());
+        iterationRef.current += 1;
+        if (iterationRef.current >= maxIterations) {
+          stopScramble({ resetToOriginal: true, markViewDone: source === "view" });
+        }
+      }, speed);
+    };
+
+    if (source === "view" && startDelayMs > 0) {
+      timeoutRef.current = setTimeout(start, startDelayMs);
+    } else {
+      start();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    active,
+    maxIterations,
+    prefersReducedMotion,
+    respectReducedMotion,
+    revealOrder,
+    sequential,
+    speed,
+    startDelayMs,
+    text,
+    useOriginalCharsOnly,
+    characters,
+    restartNonce,
+    viewActive,
+  ]);
 
   const hoverProps =
-    animateOn === "hover" || animateOn === "both"
+    hoverEnabled
       ? {
           onMouseEnter: () => setIsHovering(true),
           onMouseLeave: () => setIsHovering(false),
@@ -244,23 +357,34 @@ function DecryptedText({
       {...hoverProps}
       {...restProps}
     >
-      <span style={styles.srOnly}>{displayText}</span>
+      <span style={styles.srOnly}>{text}</span>
 
-      <span aria-hidden="true">
-        {displayText.split("").map((char, index) => {
-          const isRevealedOrDone =
-            revealedIndices.has(index) || !isScrambling || !isHovering;
+      {className === encryptedClassName ? (
+        <span aria-hidden="true" className={className}>
+          {displayText}
+        </span>
+      ) : (
+        <span aria-hidden="true">
+          {displayText.split("").map((char, index) => {
+            const revealedMask = revealedMaskRef.current;
+            const isRevealedOrDone =
+              !isScrambling || (!sequential && !hoverActive && !viewActive)
+                ? true
+                : sequential
+                  ? revealedMask[index]
+                  : false;
 
-          return (
-            <span
-              key={index}
-              className={isRevealedOrDone ? className : encryptedClassName}
-            >
-              {char}
-            </span>
-          );
-        })}
-      </span>
+            return (
+              <span
+                key={index}
+                className={isRevealedOrDone ? className : encryptedClassName}
+              >
+                {char}
+              </span>
+            );
+          })}
+        </span>
+      )}
     </span>
   );
 }
