@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Users, ArrowRight, Newspaper, Rocket } from "lucide-react";
 import Link from "next/link";
 import { useWaitlistCount } from "@/hooks/use-waitlist-count";
-import { DecryptedText } from "@/components/ui/decrypted-text";
+import DecryptedText from "@/components/ui/decrypted-text";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { MivroLogo } from "@/components/ui/mivro-logo";
 import { CountdownTimer } from "@/components/ui/countdown-timer";
@@ -33,74 +33,90 @@ export function WaitlistCard() {
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative w-full"
+        className="relative w-full max-w-3xl mx-auto"
       >
         {/* Glow effect behind card */}
         <div
           className="absolute -inset-1 rounded-3xl blur-xl opacity-30"
           style={{
-            background: "linear-gradient(135deg, #fbbf24 0%, #c75b12 50%, #008542 100%)"
+            background:
+              "linear-gradient(135deg, #fbbf24 0%, #c75b12 50%, #008542 100%)",
           }}
         />
 
         {/* Main card with glassmorphism */}
-        <div className="relative w-full rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-8 sm:p-10 md:p-14 overflow-hidden">
+        <div className="relative w-full rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-6 sm:p-8 overflow-hidden">
           {/* Border beam effect */}
-          <BorderBeam size={250} duration={15} colorFrom="#fbbf24" colorTo="#c75b12" />
+          <BorderBeam
+            size={250}
+            duration={15}
+            colorFrom="#fbbf24"
+            colorTo="#c75b12"
+          />
 
           {/* Subtle inner glow */}
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-white/5 via-transparent to-transparent pointer-events-none" />
 
           {/* Mivro Logo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1 }}
-            className="flex justify-center mb-6"
+            className="flex justify-center mb-4"
           >
-            <MivroLogo className="text-4xl sm:text-5xl" />
+            <MivroLogo className="text-3xl sm:text-4xl" />
           </motion.div>
 
           {/* Countdown Timer - Launching Feb 1, 2026 at 12am CST */}
-          <div className="mb-8">
-            <CountdownTimer targetDate={new Date("2026-02-01T00:00:00-06:00")} />
+          <div className="mb-5">
+            <CountdownTimer
+              targetDate={new Date("2026-02-01T00:00:00-06:00")}
+            />
           </div>
 
           {/* Headline with DecryptedText effect */}
-          <h1 className="mb-6 text-center text-4xl font-black tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl font-display leading-[1.1]">
+          <h1 className="mb-4 text-center text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl font-display leading-[1.1]">
             <DecryptedText
               text="The Campus Platform"
-              speed={45}
-              maxIterations={8}
-              sequential={false}
-              className="block"
+              animateOn="view"
+              revealDirection="start"
+              sequential
+              useOriginalCharsOnly={false}
+              speed={60}
+              maxIterations={30}
+              className="inline"
             />
             <span
               className="block mt-2"
               style={{
-                background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)",
+                background:
+                  "linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                backgroundClip: "text"
+                backgroundClip: "text",
               }}
             >
               <DecryptedText
                 text="UTD Deserves"
-                speed={45}
-                maxIterations={10}
-                sequential={false}
+                animateOn="view"
+                revealDirection="start"
+                sequential
+                useOriginalCharsOnly={false}
+                speed={60}
+                maxIterations={30}
                 className="inline"
               />
             </span>
           </h1>
 
           {/* Subtext */}
-          <p className="mb-12 text-center text-lg text-white/70 sm:text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed font-light">
-            Mivro connects students, clubs, journalists, and student businesses in one unified platform.
+          <p className="mb-6 text-center text-base text-white/70 sm:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+            Mivro connects students, clubs, journalists, and student businesses
+            in one unified platform.
           </p>
 
           {/* CTA Button - Enhanced with glow */}
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-6">
             <Link href="/form">
               <motion.div
                 whileHover={{ scale: 1.02 }}
@@ -110,41 +126,46 @@ export function WaitlistCard() {
                 {/* Button glow */}
                 <div
                   className="absolute -inset-1 rounded-xl blur-lg opacity-60 group-hover:opacity-80 transition-opacity"
-                  style={{ background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)" }}
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
+                  }}
                 />
                 <Button
                   size="lg"
-                  className="relative px-10 py-7 text-xl font-bold rounded-xl border-0 transition-all"
+                  className="relative px-8 py-5 text-lg font-bold rounded-xl border-0 transition-all"
                   style={{
-                    background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
+                    background:
+                      "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
                     color: "#09090b",
-                    boxShadow: "0 4px 20px rgba(251, 191, 36, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)"
+                    boxShadow:
+                      "0 4px 20px rgba(251, 191, 36, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
                   }}
                 >
                   Express Your Interest
-                  <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>
             </Link>
           </div>
 
           {/* Features grid - horizontal row */}
-          <div className="relative z-20 flex justify-center gap-4 sm:gap-6 mb-8">
+          <div className="relative z-20 flex justify-center gap-3 sm:gap-4 mb-5">
             {[
               {
                 label: "Clubs",
                 icon: Users,
-                desc: "Discover and join a wide range of student organizations. Manage events, recruit members, and grow your community in one centralized hub."
+                desc: "Discover and join a wide range of student organizations. Manage events, recruit members, and grow your community in one centralized hub.",
               },
               {
                 label: "News",
                 icon: Newspaper,
-                desc: "Stay informed with the latest campus news, student journalism, and trending stories from around UTD. Never miss a beat."
+                desc: "Stay informed with the latest campus news, student journalism, and trending stories from around UTD. Never miss a beat.",
               },
               {
                 label: "Ventures",
                 icon: Rocket,
-                desc: "Launch your startup or discover innovative student businesses. A dedicated platform for student entrepreneurs to showcase and thrive."
+                desc: "Launch your startup or discover innovative student businesses. A dedicated platform for student entrepreneurs to showcase and thrive.",
               },
             ].map((feature, i) => (
               <motion.div
@@ -157,15 +178,17 @@ export function WaitlistCard() {
                   console.log("Clicked feature:", feature.label);
                   setSelectedFeature(feature);
                 }}
-                className="flex flex-col items-center gap-2 px-6 py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-400/30 transition-all cursor-pointer group"
+                className="flex flex-col items-center gap-1.5 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-400/30 transition-all cursor-pointer group"
                 style={{
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
                 }}
               >
-                <div className="p-3 rounded-full bg-white/5 group-hover:bg-amber-400/10 transition-colors">
-                  <feature.icon className="h-6 w-6 text-white/70 group-hover:text-amber-400 transition-colors" />
+                <div className="p-2 rounded-full bg-white/5 group-hover:bg-amber-400/10 transition-colors">
+                  <feature.icon className="h-5 w-5 text-white/70 group-hover:text-amber-400 transition-colors" />
                 </div>
-                <span className="text-sm font-semibold text-white/60 group-hover:text-white transition-colors">{feature.label}</span>
+                <span className="text-xs font-semibold text-white/60 group-hover:text-white transition-colors">
+                  {feature.label}
+                </span>
               </motion.div>
             ))}
           </div>
@@ -175,10 +198,13 @@ export function WaitlistCard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
-            className="flex justify-center mb-8"
+            className="flex justify-center mb-5"
           >
             <Link href="/contact">
-              <Button variant="link" className="text-white/40 hover:text-amber-400 transition-colors text-base">
+              <Button
+                variant="link"
+                className="text-white/40 hover:text-amber-400 transition-colors text-sm"
+              >
                 Contact Us
               </Button>
             </Link>
@@ -190,10 +216,10 @@ export function WaitlistCard() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
-              className="flex items-center justify-center gap-3 text-white/60"
+              className="flex items-center justify-center gap-2 text-white/60"
             >
-              <Users className="h-5 w-5 text-amber-400" />
-              <span className="text-base font-medium">
+              <Users className="h-4 w-4 text-amber-400" />
+              <span className="text-sm font-medium">
                 <span className="font-bold text-amber-400">
                   {count.toLocaleString()}+
                 </span>{" "}
@@ -204,7 +230,10 @@ export function WaitlistCard() {
         </div>
       </motion.div>
 
-      <Dialog open={!!selectedFeature} onOpenChange={(open) => !open && setSelectedFeature(null)}>
+      <Dialog
+        open={!!selectedFeature}
+        onOpenChange={(open) => !open && setSelectedFeature(null)}
+      >
         <DialogContent
           className="border border-white/10 bg-black/90 p-0 sm:max-w-lg overflow-hidden rounded-3xl"
           style={{
@@ -225,12 +254,10 @@ export function WaitlistCard() {
                   <div
                     className="mb-6 rounded-2xl p-4 bg-white/5 border border-white/10"
                     style={{
-                      boxShadow: `0 0 20px -5px #fbbf2430`
+                      boxShadow: `0 0 20px -5px #fbbf2430`,
                     }}
                   >
-                    <selectedFeature.icon
-                      className="h-10 w-10 sm:h-12 sm:w-12 text-[#fbbf24]"
-                    />
+                    <selectedFeature.icon className="h-10 w-10 sm:h-12 sm:w-12 text-[#fbbf24]" />
                   </div>
 
                   <DialogTitle className="mb-4 text-3xl font-bold text-white tracking-tight sm:text-4xl font-display text-center">
