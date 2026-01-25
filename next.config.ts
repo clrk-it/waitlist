@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    // Explicit root to silence multiple lockfile warning in CI
+    root: __dirname,
+  },
   // Let Azure handle compression to avoid double-processing
   compress: false,
   poweredByHeader: false,

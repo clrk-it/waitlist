@@ -27,8 +27,8 @@ const InstagramIcon = ({ className }: { className?: string }) => (
 
 const socialLinks = [
     { name: "Discord", icon: DiscordIcon, href: "https://discord.gg/rQ8mUD64j6", color: "#5865F2" },
-    { name: "TikTok", icon: TikTokIcon, href: "https://tiktok.com/@utd_mivro", color: "#ff0050", label: "@utd_mivro" },
-    { name: "Instagram", icon: InstagramIcon, href: "https://instagram.com/utd_mivro", color: "#E4405F", label: "@utd_mivro" },
+    { name: "TikTok", icon: TikTokIcon, href: "https://www.tiktok.com/@mivro.utd", color: "#ff0050", label: "@mivro.utd" },
+    { name: "Instagram", icon: InstagramIcon, href: "https://www.instagram.com/mivro.utd/", color: "#E4405F", label: "@mivro.utd" },
     { name: "Email", icon: Mail, href: "mailto:support@mivro.org", color: "#fbbf24" },
 ];
 

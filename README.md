@@ -1,83 +1,86 @@
 # Waitlist
 
-A Next.js 16 waitlist experience for UTD Club Store. Visitors land on a hero card that highlights the upcoming launch, click through to a club interest form, and submit their details to a MongoDB-backed API. The interface uses Tailwind CSS v4 utilities and Radix UI-based components for consistent styling.
+Mivro waitlist built on Next.js 16 (App Router). Hero and CTA drive users into a structured interest form. Submissions are stored in Supabase; optional welcome email is sent via Resend. UI is Tailwind CSS v4 + Radix + Lucide with Framer Motion for animation.
 
 ## Features
 
-- Landing page with animated mesh gradient background and prominent waitlist call-to-action.
-- Club interest form with client/server validation for UTD email addresses and club selection (including custom club entry).
-- MongoDB-backed `/api/joinWaitList` endpoint for creating and counting waitlist submissions.
-- Post-submission thank-you screen with quick navigation back to the form or homepage.
-- Dark-friendly UI built with Tailwind CSS, Radix primitives, and Lucide icons.
+- Animated hero with countdown and feature highlights.
+- Dynamic waitlist counter backed by Supabase.
+- Interest form with role-specific validation (clubs, ventures, journalists, regular users) and duplicate email protection.
+- Admin-only dashboard at `/hidden` gated via middleware and Supabase auth.
+- Optional welcome email via Resend.
 
 ## Tech stack
 
-- **Framework:** Next.js 16 (App Router)
-- **UI:** Tailwind CSS v4, Radix UI, Lucide icons
-- **State/Forms:** React 19 client components with custom validation helpers
-- **Database:** MongoDB via the official Node driver
+- **Framework:** Next.js 16 (App Router), React 19
+- **UI:** Tailwind CSS v4, Radix UI, Lucide, Framer Motion
+- **Backend:** Supabase (Postgres + Auth) via `@supabase/supabase-js` and `@supabase/ssr`
+- **Email (optional):** Resend
 
-## Getting started
-
-### Prerequisites
+## Prerequisites
 
 - Node.js 18+ and npm
-- Access to a MongoDB database/cluster
+- Supabase project with a `waitlist_entries` table (see `supabase/migrations`)
+- Optional: Resend account and verified domain if you want outbound email
 
-### Environment variables
+## Environment variables
 
-Create an `.env.local` file in the project root with:
+Create `.env.local` (or `.env`) in the repo root:
 
-```bash
-MONGODB_URI="your-mongodb-connection-string"
-MONGODB_DB="your-database-name"
+```
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+RESEND_API_KEY=your-resend-api-key            # optional, needed for emails
+NEXT_PUBLIC_GOOGLE_VERIFICATION=your-code      # optional, for search console
 ```
 
-Both variables are required for the API routes to boot.
+These must also be set in Azure Static Web Apps app settings.
 
-### Installation
+## Install
 
 ```bash
 npm install
 ```
 
-### Running the app
-
-Start the development server:
+## Run locally
 
 ```bash
 npm run dev
+# open http://localhost:3000
 ```
 
-Then open [http://localhost:3000](http://localhost:3000).
+## Lint
 
-### Production build
+```bash
+npm run lint
+```
+
+## Build
 
 ```bash
 npm run build
 npm run start
 ```
 
-### Linting
+Note: On Windows PowerShell you might see `spawn EPERM` after compile; Linux runners (CI/Azure) build successfully.
 
-```bash
-npm run lint
-```
+## Deploy (Azure Static Web Apps)
 
-## Project structure
+- Workflow: `.github/workflows/azure-static-web-apps-mango-river-0f7860710.yml`
+- `app_location: "/."`, `output_location: ""` (Next.js server build)
+- Set app settings: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `RESEND_API_KEY` if emailing.
 
-- `app/page.tsx` – Landing page with hero/waitlist card.
-- `app/form/page.tsx` – Club interest form shell.
-- `app/thank-you/page.tsx` – Post-submission confirmation.
-- `app/api/joinWaitList/route.ts` – GET returns total waitlist count; POST creates a submission (email, club, interest, optional questions).
-- `components/` – UI building blocks, including the `WaitlistCard`, `InterestForm`, and layout visuals.
-- `lib/mongodb.ts` – Shared MongoDB connection helper using env configuration.
+## API reference
 
-## API quick reference
-
-- `GET /api/joinWaitList` → `{ item: number }` total waitlist count.
-- `POST /api/joinWaitList` → Creates a waitlist record. Body fields:
-  - `email` (required, must be a valid `@utdallas.edu` address)
-  - `club` (required)
+- `GET /api/joinWaitList` → `{ item: number }` total count
+- `POST /api/joinWaitList`
+  - `email` (required)
+  - `userType` one of `regular | journalist | venture_owner | club_owner` (required)
   - `interest` (required)
+  - `club` (required for `club_owner`)
+  - `ventureName`, `ventureCategories` (required for `venture_owner`)
   - `additionalQuestions` (optional)
+
+## Admin access
+
+`/hidden` is protected by middleware and only allows the admin email configured in `middleware.ts` (currently `hasnainmn7@gmail.com`). Update as needed.

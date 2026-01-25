@@ -61,9 +61,9 @@ export function WaitlistCard() {
             <MivroLogo className="text-4xl sm:text-5xl" />
           </motion.div>
 
-          {/* Countdown Timer - Launching Jan 25, 2026 at 12am CST */}
+          {/* Countdown Timer - Launching Feb 1, 2026 at 12am CST */}
           <div className="mb-8">
-            <CountdownTimer targetDate={new Date("2026-01-25T00:00:00-06:00")} />
+            <CountdownTimer targetDate={new Date("2026-02-01T00:00:00-06:00")} />
           </div>
 
           {/* Headline with DecryptedText effect */}
