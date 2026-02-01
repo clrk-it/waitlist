@@ -73,7 +73,7 @@ export function WaitlistCard() {
           {/* Countdown Timer - Launching Feb 1, 2026 at 12am CST */}
           <div className="mb-4 sm:mb-5">
             <CountdownTimer
-              targetDate={new Date("2026-02-01T00:00:00-06:00")}
+              targetDate={new Date("2026-03-01T00:00:00-06:00")}
             />
           </div>
 
@@ -98,9 +98,9 @@ export function WaitlistCard() {
             />
             <br className="sm:hidden" />
             <SplitTexts
-                text="UTD Deserves"
-                className="inline"
-              />
+              text="UTD Deserves"
+              className="inline"
+            />
 
           </h1>
 

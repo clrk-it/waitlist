@@ -8,7 +8,7 @@ interface CountdownTimerProps {
     targetDate?: Date;
 }
 
-const DEFAULT_TARGET_DATE = new Date("2026-02-01T00:00:00-06:00");
+const DEFAULT_TARGET_DATE = new Date("2026-03-01T00:00:00-06:00");
 
 function getTimeLeft(target: Date) {
     const difference = target.getTime() - Date.now();
